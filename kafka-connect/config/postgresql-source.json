@@ -1,0 +1,19 @@
+{
+  "name": "postgresql-source",
+  "config": {
+    "connector.class":             "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "connection.url":              "jdbc:postgresql://postgres:5432/catseye",
+    "connection.user":             "postgres",
+    "connection.password":         "postgres",
+    "mode":                        "incrementing",
+    "incrementing.column.name":    "id",
+    "topic.prefix":                "db-",
+    "table.whitelist":             "sample",
+    "poll.interval.ms":            5000,
+    "transforms":                  "MaskField,RenameField",
+    "transforms.MaskField.type":   "org.apache.kafka.connect.transforms.MaskField$Value",
+    "transforms.MaskField.fields": "str",
+    "transforms.RenameField.type": "org.apache.kafka.connect.transforms.ReplaceField$Value",
+    "transforms.RenameField.renames": "str:str2"
+  }
+}
