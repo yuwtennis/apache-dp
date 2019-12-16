@@ -5,7 +5,7 @@ services:
     image: postgres:9.6
     hostname: postgres
     networks:
-      - catseye
+      - test
     environment:
       - POSTGRES_PASSWORD=postgres
 
@@ -18,7 +18,7 @@ services:
     image: zookeeper
     hostname: zoo1
     networks:
-      - catseye
+      - test
     environment:
       ZOO_MY_ID: 1
       ZOO_SERVERS: server.1=0.0.0.0:2888:3888;2181 server.2=zoo2:2888:3888;2181 server.3=zoo3:2888:3888;2181
@@ -27,7 +27,7 @@ services:
     image: zookeeper
     hostname: zoo2
     networks:
-      - catseye
+      - test
     environment:
       ZOO_MY_ID: 2
       ZOO_SERVERS: server.1=zoo1:2888:3888;2181 server.2=0.0.0.0:2888:3888;2181 server.3=zoo3:2888:3888;2181
@@ -38,7 +38,7 @@ services:
     image: zookeeper
     hostname: zoo3
     networks:
-      - catseye
+      - test
     environment:
       ZOO_MY_ID: 3
       ZOO_SERVERS: server.1=zoo1:2888:3888;2181 server.2=zoo2:2888:3888;2181 server.3=0.0.0.0:2888:3888;2181
@@ -54,7 +54,7 @@ services:
     image: confluentinc/cp-kafka
     hostname: kafka1
     networks:
-      - catseye
+      - test
     volumes:
       - /data/kafka-logs:/tmp/kafka-logs
     environment:
@@ -80,13 +80,13 @@ services:
     ports:
       - 18083:8083
     networks:
-      - catseye
+      - test
     environment:
       - CONNECT_BOOTSTRAP_SERVERS=kafka1:9092
-      - CONNECT_GROUP_ID=catseye
-      - CONNECT_CONFIG_STORAGE_TOPIC=catseye-config
-      - CONNECT_OFFSET_STORAGE_TOPIC=catseye-offsets
-      - CONNECT_STATUS_STORAGE_TOPIC=catseye-status
+      - CONNECT_GROUP_ID=test
+      - CONNECT_CONFIG_STORAGE_TOPIC=test-config
+      - CONNECT_OFFSET_STORAGE_TOPIC=test-offsets
+      - CONNECT_STATUS_STORAGE_TOPIC=test-status
       - CONNECT_KEY_CONVERTER=org.apache.kafka.connect.json.JsonConverter
       - CONNECT_VALUE_CONVERTER=org.apache.kafka.connect.json.JsonConverter
       - CONNECT_INTERNAL_KEY_CONVERTER=org.apache.kafka.connect.json.JsonConverter
@@ -105,4 +105,4 @@ services:
       - postgres
 
 networks:
-  catseye:
+  test:
