@@ -19,7 +19,7 @@ dependencies {
 }
 
 application {
-    mainClass = 'stream.App'
+    mainClass = 'app.App'
 }
 
 tasks.named('test') {

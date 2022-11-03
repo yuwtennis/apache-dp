@@ -1,4 +1,4 @@
-package stream;
+package app;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -11,7 +11,8 @@ import org.apache.kafka.common.serialization.Serializer;
 import java.util.Map;
 
 public class PersonSerde {
-    public static class JSONSerde<T extends JSONSerdeCompatible> implements Serializer<T>, Deserializer<T>, Serde<T> {
+    public static class JSONSerde<T extends JSONSerdeCompatible>
+            implements Serializer<T>, Deserializer<T>, Serde<T> {
         private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper() ;
 
         @Override
@@ -83,21 +84,5 @@ public class PersonSerde {
         public String firstName;
         public String lastName;
         public Long timestamp;
-
-        public String getFirstName() {
-            return firstName;
-        }
-
-        public void setFirstName(String firstName) {
-            this.firstName = firstName;
-        }
-
-        public String getLastName() {
-            return lastName;
-        }
-
-        public void setLastName(String lastName) {
-            this.lastName = lastName;
-        }
     }
 }

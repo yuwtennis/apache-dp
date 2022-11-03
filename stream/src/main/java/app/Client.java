@@ -1,4 +1,4 @@
-package stream;
+package app;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Serdes;
@@ -10,12 +10,13 @@ import org.apache.kafka.streams.Topology;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
-import static stream.StreamProcesses.wordCount;
+import static app.StreamProcesses.simpleObjectTransmission;
+import static app.StreamProcesses.wordCount;
 
 public class Client {
     public static void run() {
         Properties props = new Properties() ;
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "stream");
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "app");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
@@ -25,7 +26,13 @@ public class Client {
 
         // Use Kafka Stream DSL
         final StreamsBuilder builder = new StreamsBuilder();
-        wordCount(builder, "word-count-input", "word-count-output");
+
+        // Comment in if you want to use word count stream processing
+        // wordCount(builder, "word-count-input", "word-count-output");
+
+        // Comment in if you want to use simple object transmission stream processing
+        simpleObjectTransmission(builder, "simple-object-trans-input", "simple-object-trans-output");
+
         final Topology topology = builder.build();
         final KafkaStreams streams = new KafkaStreams(topology, props);
         final CountDownLatch latch = new CountDownLatch(1);

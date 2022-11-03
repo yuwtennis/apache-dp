@@ -1,12 +1,10 @@
-package stream;
+package app;
 
-import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.*;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.Date;
 import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -55,5 +53,52 @@ public class StreamProcessesTest {
 
         testDriver.close();
 
+    }
+
+    @Test
+    void TestPersonProxy() {
+        Date date = new Date();
+        StreamsBuilder builder = new StreamsBuilder();
+        StreamProcesses.simpleObjectTransmission(builder, srcTopic, sinkTopic);
+        Topology topology = builder.build();
+        Properties props = loadProps();
+        PersonSerde.JSONSerde<PersonSerde.Person> personSer = new PersonSerde.JSONSerde<>();
+
+        TopologyTestDriver testDriver = new TopologyTestDriver(topology, props);
+        TestInputTopic<String, PersonSerde.Person> inputTopic = testDriver
+                .createInputTopic(
+                        srcTopic,
+                        Serdes.String().serializer(),
+                        personSer.serializer()
+                );
+
+        TestOutputTopic<String, PersonSerde.Person> outputTopic = testDriver
+                .createOutputTopic(
+                        sinkTopic,
+                        Serdes.String().deserializer(),
+                        personSer.deserializer()
+                );
+
+
+        PersonSerde.Person person = new PersonSerde.Person();
+        person.firstName = "Taro";
+        person.lastName = "Suzuki";
+        person.timestamp = date.getTime();
+
+        inputTopic.pipeInput("", person);
+
+        PersonSerde.Person personResult = outputTopic.readValue() ;
+
+        assertEquals(
+                person.firstName,
+                personResult.firstName);
+
+        assertEquals(
+                person.lastName,
+                personResult.lastName);
+
+        assertEquals(
+                person.timestamp,
+                personResult.timestamp);
     }
 }
