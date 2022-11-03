@@ -1,4 +1,11 @@
 
+* [Design](#design)
+* [Quick Start](#quick-start-with-word-count)
+
+## Design
+
+![UML](imgs/uml.png)
+
 ## Quick start with word count
 
 See [StreamProcesses](src/main/java/app/StreamProcesses.java) for sample stream processing
