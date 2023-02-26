@@ -8,8 +8,6 @@ spec:
   kafka:
     version: 3.4.0
     replicas: 1
-    # Expose service service as external loadbalancer
-    # https://strimzi.io/docs/operators/latest/configuring.html#proc-accessing-kafka-using-loadbalancers-str
     listeners:
       - name: plain
         port: 9092

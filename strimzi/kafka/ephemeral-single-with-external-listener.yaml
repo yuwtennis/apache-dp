@@ -8,8 +8,6 @@ spec:
   kafka:
     version: 3.4.0
     replicas: 1
-    # Expose service to subnetwork
-    # https://strimzi.io/docs/operators/latest/configuring.html#proc-accessing-kafka-using-nodeports-str
     listeners:
       - name: plain
         port: 9092
